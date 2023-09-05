@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" text="text/javascript"></script>
+    <script src="mqtt.js" text="text/javascript"></script>
+    <title>TRAFFIC LIGHT SIMULATOR</title>
+</head>
+
+<body>
+    <div class="container">
+        <div id="formContainer">
+            <h2>TRAFFIC LIGHT SIMULATOR</h2>
+            <form>
+                <div class="form-group">
+                    <label for="host">BROKER</label>
+                    <input type="text" name="host" id="host" placeholder="Insert Hostname Broker">
+                </div>
+
+                <div class="form-group">
+                    <label for="port">WEBSOCKET PORT</label>
+                    <input type="number" name="port" id="port" placeholder="Insert Websocket Port">
+                </div>
+
+                <div class="form-group">
+                    <label for="topic_s">TOPIC SUBSCRIBE</label>
+                    <input type="text" name="topic_s" id="topic_s" placeholder="Insert Subscribe Topic">
+                </div>
+
+                <div class="form-group">
+                    <input type="button" id="btn-connect" value="Connect">
+                </div>
+
+                <div class="form-group">
+                    <label for="topic_p">TOPIC PUBLISH</label>
+                    <input type="text" name="topic_p" id="topic_p" placeholder="Insert Publish Topic">
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label for="red_delay" id="redDelayLabel">Red Delay</label>
+                        <input type="number" id="red_delay" name="red_delay" placeholder="Red Delay (millisecond)">
+                    </div>
+                    <div class="form-group">
+                        <label for="green_delay" id="greenDelayLabel">Green Delay</label>
+                        <input type="number" id="green_delay" name="green_delay"
+                            placeholder="Green Delay (millisecond)">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="button" id="btn-publish" value="Publish">
+                </div>
+
+            </form>
+        </div>
+
+        <div id="box">
+            <div class="traffic-light">
+                <div id="red" class="red-light light"></div>
+                <div id="yellow" class="yellow-light light"></div>
+                <div id="green" class="green-light light"></div>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        var btn_connect = document.getElementById("btn-connect");
+        var btn_publish = document.getElementById("btn-publish");
+
+        btn_connect.addEventListener("click", function () {
+            if (btn_connect.value == "Connect") {
+                startConnect();
+            } else {
+                startDisconnect();
+            }
+        });
+
+        btn_publish.addEventListener("click", function () {
+            let isConfirmed = window.confirm("Apakah yakin ingin mengubah settingan delay?");
+            if (isConfirmed) {
+                publishMessage(function (success) {
+                    if (success) {
+                        window.alert('Settingan delay berhasil diubah!');
+                    } else {
+                        window.alert('Settingan delay gagal diubah!');
+                    }
+                });
+            } else {
+                window.alert("Settingan delay batal diubah!")
+            }
+
+        });
+    </script>
+
+</body>
+
+</html>
